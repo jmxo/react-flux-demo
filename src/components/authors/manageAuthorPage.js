@@ -27,6 +27,16 @@ var ManageAuthorPage = React.createClass({
 		};
 	},
 
+  componentWillMount: function() {
+    //we used cwm instead of cdm, cdm would cause
+    // the component to render again
+    var authorId = this.props.params.id; //from the /author:id
+    if (authorId) {
+      // in a real app this should be async
+      this.setState({author: AuthorApi.getAuthorById(authorId)});
+    }
+  },
+
   setAuthorState: function(event) {
     this.setState({dirty: true});
     var field = event.target.name;
