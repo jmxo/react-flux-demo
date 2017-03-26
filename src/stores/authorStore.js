@@ -21,3 +21,11 @@ var AuthorStore = assign({}, EventEmitter.prototype, {
   }
 
 });
+
+Dispatcher.register(function(action) {
+  switch(action.actionType) {
+
+  }
+});
+
+module.exports = AuthorStore;
