@@ -1,12 +1,10 @@
 "use strict";
 
 var React = require('react');
-var Router = require('react-router');
+var ReactDom = require('react-dom');
 var routes = require('./routes');
 var InitializeActions = require('./actions/initializeActions');
 
 InitializeActions.initApp();
 
-Router.run(routes, function(Handler) {
-  React.render(<Handler />, document.getElementById('app'));
-});
+ReactDom.render(routes, document.getElementById('app'));

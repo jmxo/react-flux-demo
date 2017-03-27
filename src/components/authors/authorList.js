@@ -1,8 +1,7 @@
 "use strict";
 
 var React = require('react');
-var Router = require('react-router');
-var Link = Router.Link;
+var Link = require('react-router').Link;
 var AuthorActions = require('../../actions/authorActions');
 var toastr = require('toastr');
 
@@ -23,7 +22,7 @@ var AuthorList = React.createClass({
     var createAuthorRow = function(author) {
       return (
         <tr key={author.id}>
-          <td><Link to="manageAuthor" params={{id: author.id}}>{author.id}</Link></td>
+          <td><Link to={"author/" + author.id} params={{id: author.id}}>{author.id}</Link></td>
           <td>{author.firstName} {author.lastName}</td>
           <td><a href="#" onClick={this.deleteAuthor.bind(this, author.id)}>Delete</a></td>
         </tr>
@@ -33,9 +32,11 @@ var AuthorList = React.createClass({
       <div>
         <table className="table">
           <thead>
-            <th>ID</th>
-            <th>Name</th>
-            <th></th>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             {this.props.authors.map(createAuthorRow, this)}

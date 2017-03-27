@@ -4,10 +4,14 @@ var gulp = require('gulp');
 var connect = require('gulp-connect'); //runs a local dev server
 var open = require('gulp-open'); //opens a url in a web browser
 var browserify = require('browserify'); // bundles JS
-var reactify = require('reactify'); //transforms JSX to JS
+
+//deprecated, use babelify instead
+// var reactify = require('reactify'); //transforms JSX to JS
+
 var source = require('vinyl-source-stream'); //use conventional text streams with gulp
 var concat = require('gulp-concat'); //concatenates files
 var lint = require('gulp-eslint'); //Lint JS/JSX files
+var historyApiFallback = require('connect-history-api-fallback'); //Load index.html regardless of what's in the URL
 
 var config = {
     port: 9005,
@@ -19,7 +23,7 @@ var config = {
       css: [
         'node_modules/bootstrap/dist/css/bootstrap.min.css',
         'node_modules/bootstrap/dist/css/bootstrap-theme.min.css',
-        'node_modules/toastr/toastr.css'
+        'node_modules/toastr/build/toastr.min.css'
       ],
       dist: './dist',
       mainJs: './src/main.js'
@@ -30,6 +34,9 @@ var config = {
 gulp.task('connect', function() {
   connect.server({
     root: ['dist'],
+    middleware: function(connect, opt) {
+      return [historyApiFallback()];
+    },
     port: config.port,
     base: config.devBaseUrl,
     livereload: true
@@ -52,7 +59,8 @@ gulp.task('html', function() {
 
 gulp.task('js', function() {
   browserify(config.paths.mainJs)
-    .transform(reactify)
+    //.transform(reactify)
+    .transform("babelify", {presets: ["react"]})
     .bundle()
     .on('error', console.error.bind(console))
     .pipe(source('bundle.js'))

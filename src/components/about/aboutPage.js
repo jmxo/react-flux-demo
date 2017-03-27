@@ -1,8 +1,10 @@
 "use strict";
 
 var React = require('react');
-
+var withRouter = require('react-router').withRouter;
 var About = React.createClass({
+
+	//deprecated,, now done using withRouter
 	// statics: {
 	// 	willTransitionTo: function(transition, params, query, callback) {
 	// 		if (!confirm('willTransitionTo demo: Are you sure you want to visit About page?')) {
@@ -17,11 +19,22 @@ var About = React.createClass({
 	// 		}
 	// 	}
 	// },
+
+	componentDidMount: function() {
+		this.props.router.setRouteLeaveHook(this.props.route, this.routerWillLeave)
+	},
+
+	routerWillLeave: function(nextLocation) {
+		// return false to prevent a transition w/o prompting the user,
+		// or return a string to allow the user to decide:
+		return 'Are you sure you want to leave a page that\'s this exciting?';
+	},
+
 	render: function () {
 		return (
 			<div>
 				<h1>About</h1>
-				<p>
+				<div>
 					This application uses the following technologies:
 					<ul>
 						<li>React</li>
@@ -32,10 +45,10 @@ var About = React.createClass({
 						<li>Browserify</li>
 						<li>Bootstrap</li>
 					</ul>
-				</p>
+				</div>
 			</div>
 		);
 	}
 });
 
-module.exports = About;
+module.exports = withRouter(About);
